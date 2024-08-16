@@ -1,0 +1,23 @@
+{% extends "aznews/base.html" %}
+
+{% block content %}
+<main>
+    <!-- Trending Area Start -->
+    {% include 'aznews/home/trending/trending.html' %}
+    <!-- Trending Area End -->
+
+    <!--   Weekly-News start -->       
+    {% include 'aznews/home/weekly.html' %}
+    <!-- End Weekly-News -->
+
+   <!-- Whats New Start -->
+   {% include 'aznews/home/whats_new.html' %}
+    <!-- Whats New End -->
+    
+    <!--  Recent Articles start -->
+    {% include 'aznews/home/recent.html' %}
+    <!--Recent Articles End -->
+    
+    </main>
+
+    {% endblock content %}
