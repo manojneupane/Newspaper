@@ -72,9 +72,11 @@
                                         <li>
                                             <a href="index.html">Home</a>
                                         </li>
+                                        {% for category in categories %}
                                         <li>
-                                            <a href="categori.html">Category</a>
+                                            <a href="#">{{category.name}}</a>
                                         </li>
+                                        {% endfor %}
                                         <li>
                                             <a href="about.html">About</a>
                                         </li>
@@ -85,11 +87,13 @@
                                             <a href="contact.html">Contact</a>
                                         </li>
                                         <li>
-                                            <a href="#">Pages</a>
+                                            <a href="#">Tags</a>
                                             <ul class="submenu">
+                                                {% for tag in tags %}
                                                 <li>
-                                                    <a href="elements.html">Element</a>
+                                                    <a href="elements.html">{{tag.name}}</a>
                                                 </li>
+                                                {% endfor %}
                                                 <li>
                                                     <a href="blog.html">Blog</a>
                                                 </li>
