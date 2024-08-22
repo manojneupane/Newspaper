@@ -1,5 +1,4 @@
 {% extends "aznews/base.html" %}
-
 {% block content %}
     <section class="blog_area single-post-area section-padding">
         <div class="container">
@@ -13,11 +12,11 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
-                        
-                        
-                        
-                       
-                       
+                        {% include "aznews/detail/right/search_form.html" %}
+                        {% include "aznews/detail/right/categories.html" %}
+                        {% include "aznews/detail/right/popular_posts.html" %}
+                        {% include "aznews/detail/right/tags.html" %}
+                        {% include "aznews/detail/right/newsletter.html" %}
                     </div>
                 </div>
             </div>

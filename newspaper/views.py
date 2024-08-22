@@ -1,6 +1,8 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from newspaper.models import Category, Post, Tag
 
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from datetime import timedelta
 
 from django.utils import timezone
@@ -37,3 +39,15 @@ class HomeView(ListView):
         context["tags"] = Tag.objects.all()[:10]
 
         return context
+
+
+class PostDetailView(DetailView):
+    model=Post
+    template_name="aznews/detail/detail.html"
+    context_object_name="post"
+
+    def get_queryset(self):
+        query=super().get_queryset()
+        query=query.filter(published_at__isnull=False, status="active")
+        return query
+    
