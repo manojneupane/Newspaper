@@ -35,19 +35,42 @@ class HomeView(ListView):
             published_at__isnull=False, status="active"
         ).order_by("-published_at")[:7]
 
-        context["categories"] = Category.objects.all()[:5]
-        context["tags"] = Tag.objects.all()[:10]
+        # context["categories"] = Category.objects.all()[:5]
+        # context["tags"] = Tag.objects.all()[:10]
 
         return context
 
 
 class PostDetailView(DetailView):
-    model=Post
-    template_name="aznews/detail/detail.html"
-    context_object_name="post"
+    model = Post
+    template_name = "aznews/detail/detail.html"
+    context_object_name = "post"
 
     def get_queryset(self):
-        query=super().get_queryset()
-        query=query.filter(published_at__isnull=False, status="active")
+        query = super().get_queryset()
+        query = query.filter(published_at__isnull=False, status="active")
         return query
-    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        obj = self.get_object()
+        obj.view_count += 1
+        obj.save()
+
+        context["previous_post"] = (
+            Post.objects.filter(
+                published_at__isnull=False, status="active", id__lt=obj.id
+            )
+            .order_by("-id")
+            .first()
+        )
+
+        context["next_post"] = (
+            Post.objects.filter(
+                published_at__isnull=False, status="active", id__gt=obj.id
+            )
+            .order_by("id")
+            .first()
+        )
+
+        return context

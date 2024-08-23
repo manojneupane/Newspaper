@@ -5,7 +5,7 @@ def navigation(request):
     tags=Tag.objects.all()[:10]
     trending_posts=Post.objects.filter(
         published_at__isnull=False, status="active"
-        ).order_by("-view_count")[:3]
+        ).order_by("-view_count")[:5]
     
     return {
         "categories":categories,
