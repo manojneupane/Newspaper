@@ -41,6 +41,26 @@ class Post(TimeStampModel):
     def __str__(self):
         return self.title
 
+class UserProfile(TimeStampModel):
+    user=models.OneToOneField("auth.User", on_delete=models.CASCADE)
+    image=models.ImageField(upload_to="user_images/%Y/%m/%d", blank=False)
+    address=models.CharField(max_length=200)
+    biography=models.TextField()
+
+    def __str__(self):
+        return self.user.username
+    
+class Comment(TimeStampModel):
+    post=models.ForeignKey(Post, on_delete=models.CASCADE)
+    comment=models.TextField()
+    name=models.CharField(max_length=50)
+    email=models.EmailField()
+
+    def __str__(self):
+        return f"{self.email} | {self.comment [:70]}"
+
+    
+
 
 ## 1 - 1 Relationship
 # 1 user can have 1 profile => 1
@@ -63,3 +83,4 @@ class Post(TimeStampModel):
 
 # 1 post can contain M tag => M
 # 1 tag can be used in M post => M
+

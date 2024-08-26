@@ -1,8 +1,10 @@
 from typing import Any
 from django.db.models.query import QuerySet
-from newspaper.models import Category, Post, Tag
+from django.shortcuts import redirect, render
+from newspaper.forms import CommentForm
+from newspaper.models import Category, Post, Tag, UserProfile
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View, TemplateView
 from datetime import timedelta
 
 from django.utils import timezone
@@ -74,3 +76,37 @@ class PostDetailView(DetailView):
         )
 
         return context
+
+
+class CommentView(View):
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        post_id = request.POST["post"]
+        if form.is_valid():
+            form.save()
+            return redirect("post-detail", post_id)
+
+        post = Post.objects.get(pk=post_id)
+        return render(
+            request,
+            "aznews/detail/detail.html",
+            {"post": post, "form": form},
+        )
+
+class AboutView(TemplateView):
+    template_name="aznews/about.html"
+
+
+class PostListView(ListView):
+    model=Post
+    template_name="aznews/list/list.html"
+    context_object_name="posts"
+    paginate_by=1
+
+    def get_queryset(self):
+        return Post.objects.filter(
+            published_at__isnull=False, status="active"
+        ). order_by("-published_at")
+    
+
+    
