@@ -1,8 +1,11 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
-from newspaper.forms import CommentForm
+
+from newspaper.forms import CommentForm, ContactForm
 from newspaper.models import Category, Post, Tag, UserProfile
+from django.contrib import messages
+
 
 from django.views.generic import ListView, DetailView, View, TemplateView
 from datetime import timedelta
@@ -93,20 +96,45 @@ class CommentView(View):
             {"post": post, "form": form},
         )
 
+
 class AboutView(TemplateView):
-    template_name="aznews/about.html"
+    template_name = "aznews/about.html"
 
 
 class PostListView(ListView):
-    model=Post
-    template_name="aznews/list/list.html"
-    context_object_name="posts"
-    paginate_by=1
+    model = Post
+    template_name = "aznews/list/list.html"
+    context_object_name = "posts"
+    paginate_by = 1
 
     def get_queryset(self):
         return Post.objects.filter(
             published_at__isnull=False, status="active"
-        ). order_by("-published_at")
-    
+        ).order_by("-published_at")
 
-    
+
+class ContactView(View):
+    template_name = "aznews/contact.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                "Successfully submitted your queries. We will contact you soon.",
+            )
+            return redirect("contact")
+        else:
+            messages.error(
+                request,
+                "Cannot submit your query. Please make sure all the fields are properly filled.",
+            )
+            return render(
+                request,
+                self.template_name,
+                {"form": form},
+            )

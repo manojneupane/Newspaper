@@ -54,7 +54,7 @@ $(document).ready(function(){
                     minlength: "thats all? really?"
                 }
             },
-            submitHandler: function(form) {
+            // submitHandler: function(form) {
                 $(form).ajaxSubmit({
                     type:"POST",
                     data: $(form).serialize(),
