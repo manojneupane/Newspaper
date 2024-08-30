@@ -51,13 +51,20 @@ class UserProfile(TimeStampModel):
         return self.user.username
     
 class Comment(TimeStampModel):
-    post=models.ForeignKey(Post, on_delete=models.CASCADE)
-    comment=models.TextField()
-    name=models.CharField(max_length=50)
-    email=models.EmailField()
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    comment = models.TextField()
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
 
     def __str__(self):
-        return f"{self.email} | {self.comment [:70]}"
+        return f"{self.email} | {self.comment[:70]}"
+
+    @property
+    def initials(self):
+        name_parts = self.name.split()
+        if len(name_parts) > 1:
+            return f"{name_parts[0][0]}{name_parts[-1][0]}"
+        return name_parts[0][0] * 2
 
 class Contact(TimeStampModel):
     message= models.TextField()
@@ -66,7 +73,21 @@ class Contact(TimeStampModel):
     subject=models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name
+        return self.name   
+    
+class Newsletter(TimeStampModel):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email
+
+
+
+    
+    
+    
+    
+    
 
 
 ## 1 - 1 Relationship

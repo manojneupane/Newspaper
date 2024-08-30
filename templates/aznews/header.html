@@ -73,9 +73,9 @@
                                             <a href="/">Home</a>
                                         </li>
                                         {% for category in categories %}
-                                        <li>
-                                            <a href="#">{{category.name}}</a>
-                                        </li>
+                                            <li>
+                                                <a href="{% url 'post-by-category' category.id %}">{{ category.name|title }}</a>
+                                            </li>
                                         {% endfor %}
                                         <li>
                                             <a href="{% url 'about' %}">About</a>
@@ -90,9 +90,9 @@
                                             <a href="#">Tags</a>
                                             <ul class="submenu">
                                                 {% for tag in tags %}
-                                                <li>
-                                                    <a href="elements.html">{{tag.name}}</a>
-                                                </li>
+                                                    <li>
+                                                        <a href="{% url 'post-by-tag' tag.id %}">{{ tag.name }}</a>
+                                                    </li>
                                                 {% endfor %}
                                                 <li>
                                                     <a href="blog.html">Blog</a>
